@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="WindEveMagnat.UI.Controls.EveItemDetails"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="476" d:DesignWidth="415" Name="EveItemDetails1">
+    <Grid MinHeight="457" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+		<Image Height="64" HorizontalAlignment="Left" Margin="322,11,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="64" />
+		<Label Content="Title" Height="28" HorizontalAlignment="Left" Margin="12,12,0,0" Name="lblTitle" VerticalAlignment="Top" />
+		<DataGrid AutoGenerateColumns="False" MinHeight="283" HorizontalAlignment="Stretch" Margin="5,162,5,5" Name="dataGridProductionCost" VerticalAlignment="Stretch" ItemsSource="{Binding}" IsReadOnly="True" VerticalContentAlignment="Stretch">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Item" Binding="{Binding name}" />
+				<DataGridTextColumn Header="Quantity" Binding="{Binding quantity}"/>
+				<DataGridTextColumn Header="Price" Binding="{Binding PriceFormatted}"/>
+				<DataGridTextColumn Header="Cost" Binding="{Binding CostFormatted}"/>
+			</DataGrid.Columns>
+		</DataGrid>
+		<Label Content="Build Cost:" Height="28" HorizontalAlignment="Left" Margin="12,38,0,0" Name="lblBuildCost" VerticalAlignment="Top" />
+		<Label Content="Jita price:" Height="28" HorizontalAlignment="Left" Margin="12,68,0,0" Name="lblJitaPrice" VerticalAlignment="Top" />
+		<TextBox Height="23" HorizontalAlignment="Left" Margin="90,41,0,0" Name="txtBuildCost" VerticalAlignment="Top" Width="120" />
+		<TextBox Height="23" HorizontalAlignment="Left" Margin="90,71,0,0" Name="txtJitaPrice" VerticalAlignment="Top" Width="120" />
+		<TextBox Height="23" HorizontalAlignment="Left" Margin="90,12,0,0" Name="txtTitle" VerticalAlignment="Top" Width="120" />
+		<Label Content="Deklein price:" Height="28" HorizontalAlignment="Left" Margin="12,99,0,0" Name="lblDekleinPrice" VerticalAlignment="Top" />
+		<TextBox Height="23" HorizontalAlignment="Left" Margin="90,102,0,0" Name="txtDekleinPrice" VerticalAlignment="Top" Width="120" />
+		<Label Content="Profit:" Height="28" HorizontalAlignment="Left" Margin="12,128,0,0" Name="lblProfit" VerticalAlignment="Top" />
+		<TextBox Height="23" HorizontalAlignment="Left" Margin="90,131,0,0" Name="txtProfit" VerticalAlignment="Top" Width="120" />
+	</Grid>
+</UserControl>

@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="WindEveMagnat.UI.Controls.TransactionsGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:Controls="clr-namespace:WindEveMagnat.UI.CommonControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="548" d:DesignWidth="1002">
+	<UserControl.Resources>
+        <Controls:ValueToColorConverter x:Key="ValueToColorConverter" />
+    </UserControl.Resources>
+	<Grid>
+        <Grid Height="71" HorizontalAlignment="Left" Margin="5,5,0,0" Name="gridFilter" VerticalAlignment="Top">
+			<ComboBox Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="cbCharacters" VerticalAlignment="Top" Width="253" Loaded="cbCharacters_Loaded" />
+			<Button Content="Load Transactions" Height="23" Name="btnLoadTransactions" Width="117" Click="btnLoadTransactions_Click" Margin="265,6,581,42" />
+			<CheckBox Content="No Limit" Height="16" HorizontalAlignment="Left" Margin="6,35,0,0" Name="chkNoLimit" VerticalAlignment="Top" />
+			<Button Content="TestData" Height="23" HorizontalAlignment="Left" Margin="388,6,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
+		</Grid>
+		<DataGrid AutoGenerateColumns="False" Name="dataGridTransactions" ItemsSource="{Binding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5,85,0,0" IsReadOnly="True"
+		 EnableRowVirtualization="True" MouseDoubleClick="dataGridTransactions_MouseDoubleClick">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="ClearAllMenuItem" Click="ClearAllMenuItem_OnClick"></MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.Columns>
+				<DataGridTemplateColumn  MinWidth="80" Header="Details">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Button Click="DetailsLinkClick" Width="50" Height="20">Details</Button>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTextColumn x:Name="When" Header="When" Binding="{Binding When}" SortDirection="Descending" SortMemberPath="When" />
+				<DataGridTextColumn Header="Type" Binding="{Binding TypeName}"/>
+				<DataGridTextColumn Header="Group" Binding="{Binding GroupName}"/>
+				<DataGridTextColumn x:Name="Total" Header="Total Credit" Binding="{Binding TotalFormatted}" SortMemberPath="Total"/>
+				<DataGridTextColumn Header="Quantity" Binding="{Binding QuantityFormatted}" SortMemberPath="Quantity"/>
+				<DataGridTextColumn Header="Sell Price" Binding="{Binding PriceFormatted}" SortMemberPath="Price"/>
+                <DataGridTextColumn Header="Build Cost" Binding="{Binding BuildCostFormatted}" SortMemberPath="BuildCost"/>
+				<DataGridTextColumn Header="Jita Price Cost" Binding="{Binding JitaPriceFormatted}" SortMemberPath="JitaPrice"/>
+				<DataGridTextColumn Header="Deklein Price" Binding="{Binding DekleinPriceFormatted}" SortMemberPath="DekleinPrice"/>
+				<DataGridTextColumn Header="My Profit" Binding="{Binding ProfitOfMySellingFormatted}" SortMemberPath="ProfitOfMySelling">
+					<DataGridTextColumn.CellStyle>
+						<Style TargetType="{x:Type DataGridCell}">
+							<Setter Property="Background" Value="{Binding ProfitOfMySellingColor, Converter={StaticResource ValueToColorConverter}}"/>
+							<Setter Property="Foreground" Value="Black"/>
+						</Style>
+					</DataGridTextColumn.CellStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="My Profit %" Binding="{Binding ProfitOfMySellingRateFormatted}" SortMemberPath="ProfitOfMySellingRate">
+					<DataGridTextColumn.CellStyle>
+						<Style TargetType="{x:Type DataGridCell}">
+							<Setter Property="Background" Value="{Binding ProfitOfMYSellingRateColor, Converter={StaticResource ValueToColorConverter}}"/>
+							<Setter Property="Foreground" Value="Black"/>
+						</Style>
+					</DataGridTextColumn.CellStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="Build -> Jita" Binding="{Binding ProfitBuildForJitaFormatted}" SortMemberPath="ProfitBuildForJita">
+					<DataGridTextColumn.CellStyle>
+						<Style TargetType="{x:Type DataGridCell}">
+							<Setter Property="Background" Value="{Binding ProfitBuildForJitaColor, Converter={StaticResource ValueToColorConverter}}"/>
+							<Setter Property="Foreground" Value="Black"/>
+						</Style>
+					</DataGridTextColumn.CellStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="Build -> Jita %" Binding="{Binding ProfitBuildForJitaRateFormatted}" SortMemberPath="ProfitBuildForJitaRate">
+					<DataGridTextColumn.CellStyle>
+						<Style TargetType="{x:Type DataGridCell}">
+							<Setter Property="Background" Value="{Binding ProfitBuildForJitaRateColor, Converter={StaticResource ValueToColorConverter}}"/>
+							<Setter Property="Foreground" Value="Black"/>
+						</Style>
+					</DataGridTextColumn.CellStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="Build -> Deklein" Binding="{Binding ProfitBuildForDekleinFormatted}" SortMemberPath="ProfitBuildForDeklein">
+					<DataGridTextColumn.CellStyle>
+						<Style TargetType="{x:Type DataGridCell}">
+							<Setter Property="Background" Value="{Binding ProfitBuildForDekleinColor, Converter={StaticResource ValueToColorConverter}}"/>
+							<Setter Property="Foreground" Value="Black"/>
+						</Style>
+					</DataGridTextColumn.CellStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="Build -> Deklein %" Binding="{Binding ProfitBuildForDekleinRateFormatted}" SortMemberPath="ProfitBuildForDekleinRate">
+					<DataGridTextColumn.CellStyle>
+						<Style TargetType="{x:Type DataGridCell}">
+							<Setter Property="Background" Value="{Binding ProfitBuildForDekleinRateColor, Converter={StaticResource ValueToColorConverter}}"/>
+							<Setter Property="Foreground" Value="Black"/>
+						</Style>
+					</DataGridTextColumn.CellStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="Import Jita -> Deklein" Binding="{Binding ProfitImportToDekleinFormatted}" SortMemberPath="ProfitImportToDeklein">
+					<DataGridTextColumn.CellStyle>
+						<Style TargetType="{x:Type DataGridCell}">
+							<Setter Property="Background" Value="{Binding ProfitImportToDekleinColor, Converter={StaticResource ValueToColorConverter}}"/>
+							<Setter Property="Foreground" Value="Black"/>
+						</Style>
+					</DataGridTextColumn.CellStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="Import Jita -> Deklein %" Binding="{Binding ProfitImportToDekleinRateFormatted}" SortMemberPath="ProfitImportToDekleinRate">
+					<DataGridTextColumn.CellStyle>
+						<Style TargetType="{x:Type DataGridCell}">
+							<Setter Property="Background" Value="{Binding ProfitImportToDekleinRateColor, Converter={StaticResource ValueToColorConverter}}"/>
+							<Setter Property="Foreground" Value="Black"/>
+						</Style>
+					</DataGridTextColumn.CellStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="Station" Binding="{Binding Station}"/>
+			</DataGrid.Columns>
+		</DataGrid>
+	</Grid>
+</UserControl>

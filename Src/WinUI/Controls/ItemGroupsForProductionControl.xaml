@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="WindEveMagnat.UI.Controls.ItemGroupsForProductionControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" Height="Auto" Width="Auto">
+    <Grid Height="75" Width="91">
+		<CheckBox Content="Minerals" Height="16" HorizontalAlignment="Left" Margin="5,5,0,0" Name="chkMinerals" VerticalAlignment="Top" Click="chkMinerals_Click" />
+		<CheckBox Content="Salvage T1" Height="16" HorizontalAlignment="Left" Margin="5,30,0,0" Name="chkSalvageT1" VerticalAlignment="Top" Click="chkSalvageT1_Click" />
+		<CheckBox Content="Salvage T2" Height="16" HorizontalAlignment="Left" Margin="5,55,0,0" Name="chkSalvageT2" VerticalAlignment="Top" Click="chkSalvageT2_Click" />
+	</Grid>
+</UserControl>

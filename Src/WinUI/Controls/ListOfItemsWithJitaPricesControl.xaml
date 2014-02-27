@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="WindEveMagnat.UI.Controls.ListOfItemsWithJitaPrices"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" d:DesignWidth="449" d:DesignHeight="300">
+<DataGrid VerticalContentAlignment="Stretch" AutoGenerateColumns="False" HorizontalContentAlignment="Stretch" ItemsSource="{Binding}" Name="dataGridItems" ColumnWidth="Auto" CanUserSortColumns="True" EnableRowVirtualization="True">
+		<DataGrid.Columns>
+			<DataGridTextColumn Header="Type ID" Binding="{Binding typeid}" IsReadOnly="True" />
+			<DataGridTextColumn Header="Group Name" Binding="{Binding GroupName}" IsReadOnly="True" MinWidth="40"  />
+			<DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" MinWidth="70" SortMemberPath="SortingColumn" SortDirection="Ascending"/>
+			<DataGridTextColumn Header="Price" Binding="{Binding Path=PriceFormatted}" IsReadOnly="True" />
+			<DataGridTextColumn Header="Amount" Binding="{Binding Path=Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+			<DataGridTextColumn Header="Cost" Binding="{Binding Path=CostFormatted, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"  />
+		</DataGrid.Columns>
+	</DataGrid>
+</UserControl>

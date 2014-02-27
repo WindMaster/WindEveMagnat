@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="WindEveMagnat.UI.Controls.MarketBrowserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:Controls="clr-namespace:WindEveMagnat.UI.Controls" mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="1100">
+    <Grid MinWidth="1116" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+		<Controls:EveItemsTree x:Name="eveItemsTree" Width="325" MinHeight="300" VerticalAlignment="Top" HorizontalAlignment="Left"></Controls:EveItemsTree>
+        <Controls:MarketFilterPanelControl Margin="330,0,0,0" MinHeight="50"></Controls:MarketFilterPanelControl>
+		<Controls:TransactionsGrid x:Name="transactionsGrid" Margin="330,50,0,0" MouseDoubleClick="TransactionsGrid_OnMouseDoubleClick"></Controls:TransactionsGrid>
+		<Controls:EveItemsFinderControl HorizontalAlignment="Left" Margin="0,306,0,12" x:Name="eveItemsFinder" Width="325" />
+    </Grid>
+</UserControl>

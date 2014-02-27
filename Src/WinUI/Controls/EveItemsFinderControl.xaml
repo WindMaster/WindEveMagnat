@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="WindEveMagnat.UI.Controls.EveItemsFinderControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="172" d:DesignWidth="300" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+    <Grid MinHeight="165" MinWidth="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+		<TextBox Height="23" Margin="0,12,41,0" Name="txtFinderText" VerticalAlignment="Top" KeyDown="TxtFinderTextKeyDown" />
+		<ListView Margin="0,41,0,0" Name="listViewItems" ItemsSource="{Binding}" MouseDoubleClick="ListViewItemsMouseDoubleClick" SelectionMode="Single" SelectionChanged="listViewItems_SelectionChanged">
+			<ListView.View>
+				<GridView>
+					<GridViewColumn Header="Id" DisplayMemberBinding="{Binding TypeId}" Width="40"/>
+					<GridViewColumn Header="Name" DisplayMemberBinding="{Binding TypeName}" Width="270"/>
+				</GridView>
+			</ListView.View>
+		</ListView>
+		<Button Content="Go" Height="23" HorizontalAlignment="Right" Margin="0,11,2,0" Name="btnSearch" VerticalAlignment="Top" Width="35" Click="BtnSearchClick" />
+	</Grid>
+</UserControl>

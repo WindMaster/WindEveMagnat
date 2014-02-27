@@ -1,0 +1,8 @@
+﻿<Window x:Class="WindEveMagnat.UI.Forms.EveItemDetailsForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Controls="clr-namespace:WindEveMagnat.UI.Controls"
+        Title="EveItemDetailsForm" Height="436" Width="420">
+    <Grid>
+		<Controls:EveItemDetails x:Name="EveItemDetailsControl"></Controls:EveItemDetails>
+	</Grid>
+</Window>

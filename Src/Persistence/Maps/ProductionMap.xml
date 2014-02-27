@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="WindEveMagnat.Persistence" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+	<statements>
+		<statement id="GetIdealMaterialParametersMain" parameterClass="int" resultClass="BlueprintMaterialRow" >
+			SELECT typeid
+			,name name
+			,dbo.InlineMax(0, sum(quantity)) quantity
+			,1 dmg
+			,0 isadditional
+			FROM (
+			SELECT invTypes.typeID typeid
+			,invTypes.typeName name
+			,quantity
+			FROM invTypes
+			,invTypeMaterials
+			WHERE invTypeMaterials.materialTypeID = invTypes.typeID
+			AND invTypeMaterials.typeID = #typeid#
+
+			UNION
+
+			SELECT invTypes.typeID typeid
+			,invTypes.typeName name
+			,invTypeMaterials.quantity * r.quantity * - 1 quantity
+			FROM invTypes
+			,invTypeMaterials
+			,ramTypeRequirements r
+			,invBlueprintTypes bt
+			WHERE invTypeMaterials.materialTypeID = invTypes.typeID
+			AND invTypeMaterials.typeID = r.requiredTypeID
+			AND r.typeID = bt.blueprintTypeID
+			AND r.activityID = 1
+			AND bt.productTypeID = #typeid#
+			AND r.recycle = 1
+			) t
+			GROUP BY typeid
+			,name
+		</statement>
+		<statement id="GetIdealMaterialParametersAdditional" parameterClass="int" resultClass="BlueprintMaterialRow" >
+			SELECT t.typeID typeid
+			,t.typeName name
+			,r.quantity quantity
+			,r.damagePerJob dmg
+			,1 as isadditional
+			FROM ramTypeRequirements r
+			,invTypes t
+			,invBlueprintTypes bt
+			,invGroups g
+			WHERE r.requiredTypeID = t.typeID
+			AND r.typeID = bt.blueprintTypeID
+			AND r.activityID = 1
+			AND bt.productTypeID = #typeid#
+			AND g.categoryID != 16
+			AND t.groupID = g.groupID
+		</statement>
+	</statements>
+</sqlMap>
