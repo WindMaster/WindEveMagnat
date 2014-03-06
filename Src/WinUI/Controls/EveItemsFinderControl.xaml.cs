@@ -40,7 +40,7 @@ namespace WindEveMagnat.UI.Controls
 			}
 
 			var text = txtFinderText.Text;
-			var resultList = EveDbService.Instance.FindEveItemsByName(text);
+			var resultList = Cached.InvTypes.Item.Where(x=>x.Value.Name.Contains(text));
 			listViewItems.DataContext = resultList;
 		}
 

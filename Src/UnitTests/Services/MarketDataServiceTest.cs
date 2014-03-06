@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using WindEveMagnat.Domain;
+using WindEveMagnat.Domain.Wind.Eve;
 using WindEveMagnat.Services;
 
 namespace UnitTests.Services
@@ -21,7 +22,7 @@ namespace UnitTests.Services
 		[Test]
 		public void GetItemCurrentPriceTest()
 		{
-			var dominixPrice = MarketDataService.Instance.GetItemCurrentPrice(645, (int) EveRegionEnum.TheForge);
+			var dominixPrice = MarketDataService.Instance.GetItemCurrentPrice(645, MapRegion.GetDefault());
 			Assert.Greater(dominixPrice, 0);
 		}
 

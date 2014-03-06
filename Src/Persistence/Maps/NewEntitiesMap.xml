@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<sqlMap namespace="WindEveMagnat.Persistence" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+	<statements>
+
+		<statement id="GetAllInvTypeMaterials" resultClass="InvTypeMaterial" >
+			SELECT  
+				typeID TypeId
+				,materialTypeID  MaterialTypeId
+				,quantity Quantity
+			FROM 
+				[invTypeMaterials] 
+		</statement>
+
+		<statement id="GetAllInvTypes" resultClass="InvType" >
+			SELECT  
+				typeID Id
+				,groupID MetaGroupId
+				,typeName Name
+				,description Description
+				,mass Mass
+				,volume Volume
+				,capacity Capacity
+				,portionSize PortionSize 
+				,raceID RaceId
+				,basePrice BasePrice
+				,marketGroupID MarketGroupId
+			FROM 
+				[invTypes] 
+		</statement>
+
+		<statement id="GetAllInvBlueprintTypes" resultClass="InvBlueprintType" >
+			SELECT  
+				blueprintTypeID Id
+				,parentBlueprintTypeID ParentBlueprintTypeId
+				,productTypeID ProductTypeId
+				,productionTime ProductionTime
+				,techLevel TechLevel
+				,researchProductivityTime ResearchProductivityTime
+				,researchMaterialTime ResearchMaterialTime
+				,researchCopyTime ResearchCopyTime
+				,researchTechTime ResearchTechTime
+				,productivityModifier ProductivityModifier
+				,materialModifier MaterialModifier
+				,wasteFactor WasteFactor
+				,maxProductionLimit MaxProductionLimit
+			FROM 
+				[invBlueprintTypes] 
+		</statement>
+
+		<statement id="GetAllInvMetaGroups" resultClass="InvMetaGroup" >
+			SELECT  
+				metaGroupID Id
+				,metaGroupName Name
+				,description Description
+				,iconID IconId
+			FROM 
+				[invMetaGroups] 
+		</statement>
+
+		<statement id="GetAllInvMarketGroups" resultClass="InvMarketGroup" >
+			SELECT  
+				marketGroupID Id
+				,parentGroupID ParentId
+				,marketGroupName Name
+				,description Description
+				,iconID IconId
+				,hasTypes HasTypes
+			FROM 
+				[invMarketGroups] 
+		</statement>
+
+		<statement id="GetAllRamActivities" resultClass="RamActivity" >
+			SELECT  
+				activityID Id
+				,activityName Name
+				,iconNo IconNo
+				,description Description
+			FROM 
+				[ramActivities] 
+		</statement>
+
+		<statement id="GetAllRamTypeRequirements" resultClass="RamTypeRequirement" >
+			SELECT  
+				typeID TypeId
+				,activityID ActivityId
+				,requiredTypeID RequiredTypeId
+				,quantity Quantity
+				,damagePerJob DamagePerJob
+				,recycle Recycle
+			FROM 
+				[ramTypeRequirements] 
+		</statement>
+
+		<statement id="GetAllMapRegions" resultClass="MapRegion" >
+			SELECT  
+				regionID Id
+				,regionName Name
+			FROM 
+				[mapRegions] 
+		</statement>
+
+	</statements>
+</sqlMap>

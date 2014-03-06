@@ -49,7 +49,7 @@ namespace WindEveMagnat.UI.Controls
 		public void OnLoad()
 		{
 			treeViewItems.Items.Clear();
-			treeViewItems.Items.Add( MarketGroupsHelper.GetMarketGroupsTree());
+			treeViewItems.Items.Add(MarketGroupsHelper.GetMarketGroupsTree());	
 		}
 
 		private void treeViewItems_MouseDoubleClick( object sender, MouseButtonEventArgs e )

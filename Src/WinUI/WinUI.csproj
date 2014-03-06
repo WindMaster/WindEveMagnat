@@ -119,10 +119,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\BuySomeStaffForm.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Forms\EveItemDetailsForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -174,9 +170,6 @@
     </Compile>
     <Compile Include="Forms\AddEditAccount.xaml.cs">
       <DependentUpon>AddEditAccount.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\BuySomeStaffForm.xaml.cs">
-      <DependentUpon>BuySomeStaffForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\EveItemDetailsForm.xaml.cs">
       <DependentUpon>EveItemDetailsForm.xaml</DependentUpon>

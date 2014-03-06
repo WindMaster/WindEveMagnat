@@ -21,9 +21,6 @@
 				<MenuItem Header="Update Dictionaries" />
 				<MenuItem Header="Exit" Click="MenuExitClick" />
 			</MenuItem>
-			<MenuItem Header="Tools">
-				<MenuItem Header="Buy staff calc" Click="MenuItemBuyStaffClick" />
-			</MenuItem>
 		</Menu>
 		<StatusBar Height="23" HorizontalAlignment="Stretch" Margin="0,487,0,0" Name="statusBar" VerticalAlignment="Bottom">
 			<TextBlock Name="statusBarText"></TextBlock>			

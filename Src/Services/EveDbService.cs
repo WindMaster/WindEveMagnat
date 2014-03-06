@@ -12,7 +12,6 @@ namespace WindEveMagnat.Services
 	{
 		private static EveDbService _eveDbService;
 		private static ProductionDao _productionDao;
-		private static EveEntitiesDao _eveEntitiesDao;
 
 		public static EveDbService Instance
 		{
@@ -29,37 +28,11 @@ namespace WindEveMagnat.Services
 		public EveDbService()
 		{
 			_productionDao = new ProductionDao();
-			_eveEntitiesDao = new EveEntitiesDao();
 		}
 
 		public IList<BlueprintMaterialRow> GetIdealMaterialRowsForItem(int typeid)
 		{
 			return _productionDao.GetIdealMaterialParameters(typeid);
-		}
-
-		public EveType GetItemTypeById(int i)
-		{
-			return _eveEntitiesDao.GetEveItemById(i);
-		}
-
-		public IList<MarketGroup> GetRootMarketGroups()
-		{
-			return _eveEntitiesDao.GetRootMarketGroups();
-		}
-
-		public IList<MarketGroup> GetAllMarketGroups()
-		{
-			return _eveEntitiesDao.GetAllMarketGroups();
-		}
-
-		public IList<EveType> GetMarketItemsForGroup( int group )
-		{
-			return _eveEntitiesDao.GetMarketItemsForGroup(group);
-		}
-
-		public IList<EveType> FindEveItemsByName( string text )
-		{
-			return _eveEntitiesDao.GetEveItemsByText(text);
 		}
 	}
 }

@@ -1,62 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.Caching;
+using System.IO;
+using System.Security.Cryptography.Xml;
 
 namespace WindEveMagnat.Common
 {
 	public delegate object CacheItemDataProvider();
 
- 	public class MemoryCacheBase<T> : MemoryCache
+ 	public class MemoryCacheBase
  	{
- 		private CacheItemDataProvider _callBack;
+ 		private readonly CacheItemDataProvider _callBack;
+		private readonly object _padLock = new object();
+		private object DataObject { get; set; }
+		protected Type _dataType;
+ 		protected string _cacheKey;
 
-		public MemoryCacheBase(string name, IDictionary<string, MemoryCache> localCache, CacheItemDataProvider callBack) : base(name)
+		public MemoryCacheBase(string cacheKey, Type dataType, IDictionary<string, MemoryCacheBase> localCache, CacheItemDataProvider callBack)
 		{
 			_callBack = callBack;
-			localCache.Add(name, this);
-		} 
-
-		public void Add(string name, T item)
-		{
-			Add(name, item, new CacheItemPolicy());
+			_dataType = dataType;
+			_cacheKey = cacheKey;
+			localCache.Add(cacheKey, this);
 		}
 
-		public T Get(string key)
-		{
-			if( !Contains( key ) )
-			{
-				InvalidateCache();
-				return default(T);
-			}
-
-			var result = GetCacheItem(key);
-			if (!(result is T))
-				return default(T);
-
-			return (T)result.Value;
-		}
-
- 		private void InvalidateCache()
+ 		public object GetItem()
  		{
- 			if (_callBack == null)
- 				return;
+ 			if (DataObject == null)
+ 				InvalidateCache();
 
- 			var items = (IList<T>)_callBack();
- 			foreach (T item in items)
+ 			return DataObject;
+ 		}
+
+ 		public void InvalidateCache()
+ 		{
+ 			lock (_padLock)
  			{
-
- 				//Add(item.)
-				
+ 				DataObject = _callBack();
  			}
  		}
 
- 		public Dictionary<string, T> GetAll()
-		{
-			throw new Exception("It is not implemented yet");
-		}
-	}
+ 		public virtual void SaveToFile()
+ 		{
+ 		}
+ 	}
 }

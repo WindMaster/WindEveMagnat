@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using WindEveMagnat.Domain;
+using System.Windows.Forms.VisualStyles;
+using WindEveMagnat.Domain.Wind.Eve;
 using WindEveMagnat.Services;
 
 namespace WindEveMagnat.UI.DataAccess
@@ -15,36 +16,23 @@ namespace WindEveMagnat.UI.DataAccess
 		{
 			var rootItem = new TreeViewItem {Header = "All"};
 
-			var items = EveDbService.Instance.GetAllMarketGroups();
-
-			var curLevel = -1;
-			while(true)
-			{
-				curLevel++;
-				var levelItems = items.Where(x => x.Level == curLevel).ToList();
-				if(levelItems.Count == 0)
-					break;
-
-				foreach (var marketGroup in levelItems)
-					AddMarketGroupToTree(rootItem, marketGroup);
-			}
+			var items = Cached.InvMarketGroups.Item;
+			PopulateTreeItemsToNode(rootItem, null, items);
 
 			return rootItem;
 		}
 
-		private static bool AddMarketGroupToTree( TreeViewItem rootItem, MarketGroup marketGroup )
+		private static void PopulateTreeItemsToNode(TreeViewItem parentNode, int? currentNodeId, Dictionary<int, InvMarketGroup> items)
 		{
-			if(rootItem.Tag == null || !(rootItem.Tag is int))
-				rootItem.Tag = 0;
-
-			var itemId = (Int32)rootItem.Tag;
-			if(itemId == marketGroup.ParentGroupId)
+			var filteredItems = items.Where(x => x.Value.ParentId == currentNodeId);
+			foreach (var filteredItem in filteredItems.OrderBy(x => x.Value.Name))
 			{
-				var newItem = new TreeViewItem {Header = marketGroup.GroupName, Tag = marketGroup.GroupId};
-				rootItem.Items.Add(newItem);
-				return true;
+				var id = filteredItem.Key;
+				var childNode = new TreeViewItem {Tag = id, Header = filteredItem.Value.Name};
+
+				PopulateTreeItemsToNode(childNode, id, items);
+				parentNode.Items.Add(childNode);
 			}
-			return rootItem.Items.Cast<TreeViewItem>().Any(item => AddMarketGroupToTree(item, marketGroup));
 		}
 	}
 }

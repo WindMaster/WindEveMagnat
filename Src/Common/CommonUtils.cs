@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace WindEveMagnat.Common
 {
@@ -24,7 +23,7 @@ namespace WindEveMagnat.Common
 
 		public static string ToMoneyFormat(double xx)
 		{
-			if(Equals(xx, 0))
+			if(Equals(xx, 0d))
 				return string.Empty;
 
 			var xxx = Math.Abs(xx);

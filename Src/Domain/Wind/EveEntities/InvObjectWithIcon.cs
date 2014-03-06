@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace WindEveMagnat.Domain.Wind.Eve
 {
-	public class RamActivity : InvObjectWithIcon
+	public class InvObjectWithIcon : InvObject
 	{
+		public int? IconId { get; set; }
 	}
 }

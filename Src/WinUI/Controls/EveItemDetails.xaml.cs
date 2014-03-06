@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WindEveMagnat.Domain;
+using WindEveMagnat.Domain.Wind.Eve;
 using WindEveMagnat.Services;
 using WindEveMagnat.UI.DataObjects;
 using WindEveMagnat.Common;
@@ -31,13 +32,13 @@ namespace WindEveMagnat.UI.Controls
 		public void LoadItemInfo(int typeid)
 		{
 			// title 
-			var itemFromDb = EveDbService.Instance.GetItemTypeById(typeid);
+			var itemFromDb = Cached.InvTypes.Item[typeid];
 			if(itemFromDb == null)
 			{
 				MessageBox.Show("No item in Db for id: " + typeid, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
-			txtTitle.Text = itemFromDb.TypeName;
+			txtTitle.Text = itemFromDb.Name;
 
 			// jita price 
 			var jitaPrice = CachePrices.Instance.GetCurrentPrice(typeid);
@@ -48,7 +49,7 @@ namespace WindEveMagnat.UI.Controls
 			txtBuildCost.Text = CommonUtils.ToMoneyFormat(buildCost);
 
 			// deklein price
-			var dekleinPrice = CachePrices.Instance.GetCurrentPrice(typeid, (int) EveRegionEnum.Deklein);
+			var dekleinPrice = CachePrices.Instance.GetCurrentPrice(typeid, MapRegion.Deklein.Id);
 			txtDekleinPrice.Text = CommonUtils.ToMoneyFormat(dekleinPrice);
 
 			// profit in Deklein

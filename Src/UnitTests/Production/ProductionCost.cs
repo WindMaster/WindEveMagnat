@@ -23,7 +23,7 @@ namespace UnitTests.Production
 		public void ProductionT2Cost_Sabre()
 		{
 			// Sabre
-			const int sabreTypeId = 22457; 
+			const int sabreTypeId = 22456; 
 			var materialRows = EveDbService.Instance.GetIdealMaterialRowsForItem(sabreTypeId);
 			var buildPrice = EveMathService.GetBuildPriceForItem(materialRows);
 			Assert.Greater(buildPrice, 12000000);

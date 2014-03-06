@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WindEveMagnat.Domain
+namespace WindEveMagnat.Domain.Wind.Eve
 {
-	public class TestTable
+	public class RamActivity : InvObject
 	{
-		public int id { get; set; }
-		public string name { get; set; }
+		public string IconNo { get; set; }
 	}
 }

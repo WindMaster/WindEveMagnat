@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WindEveMagnat.Domain;
+using WindEveMagnat.Domain.Wind.Eve;
 
 namespace WindEveMagnat.Services
 {
@@ -10,7 +11,7 @@ namespace WindEveMagnat.Services
 	{
 		private static CachePrices _instance;
 
-		private readonly Dictionary<int, Dictionary<int, double>> AllRegionPrices = new Dictionary<int, Dictionary<int, double>>(); 
+		private readonly Dictionary<int, Dictionary<int, double>> _allRegionPrices = new Dictionary<int, Dictionary<int, double>>(); 
 		private bool _isWarm;
 		private readonly object _lockObject = new object();
 
@@ -28,20 +29,23 @@ namespace WindEveMagnat.Services
 		private Dictionary<int, double> GetOrCreateRegionDictionary(int regionId, Dictionary<int, double> initValues = null)
 		{
 			Dictionary<int, double> regionPrices;
-			if (!AllRegionPrices.TryGetValue(regionId, out regionPrices))
+			if (!_allRegionPrices.TryGetValue(regionId, out regionPrices))
 			{
 				if (initValues == null)
 					initValues = new Dictionary<int, double>();
 
 				regionPrices = new Dictionary<int, double>(initValues);
-				AllRegionPrices.Add(regionId, regionPrices);
+				_allRegionPrices.Add(regionId, regionPrices);
 			}
 
 			return regionPrices;
 		}
 
-		public double GetCurrentPrice(int typeId, int regionId = (int)EveRegionEnum.TheForge)
+		public double GetCurrentPrice(int typeId, int regionId = -1)
 		{
+			if (regionId == -1)
+				regionId = MapRegion.GetDefault();
+
 			lock (_lockObject)
 			{
 				Warm();
@@ -63,7 +67,7 @@ namespace WindEveMagnat.Services
 				return;
 			
 				var prices = MarketDataService.Instance.GetAllMaterials();
-				GetOrCreateRegionDictionary((int) EveRegionEnum.TheForge, prices);
+				GetOrCreateRegionDictionary(MapRegion.GetDefault(), prices);
 				_isWarm = true;
 		}
 	}

@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using Newtonsoft.Json;
 using WindEveMagnat.Domain;
+using WindEveMagnat.Domain.Wind.Eve;
 
 namespace WindEveMagnat.Services
 {
@@ -154,7 +155,7 @@ namespace WindEveMagnat.Services
 		{
 			var resultDic = new Dictionary<int, int>();
 			if (regionIds == null || regionIds.Count == 0)
-				regionIds = new List<int> {(int) EveRegionEnum.TheForge};
+				regionIds = new List<int> {MapRegion.GetDefault()};
 
 			var rootItem = GetHistoryInfo(itemsIds, regionIds, buySell);
 			if(rootItem == null)
@@ -180,7 +181,7 @@ namespace WindEveMagnat.Services
 		{
 			var prices = new Dictionary<int, double>();
 			var mineralIds = GetMineralsIds();
-			var rootItem = Instance.GetItemInfoCurrent(mineralIds, new List<int> {(int) EveRegionEnum.TheForge});
+			var rootItem = Instance.GetItemInfoCurrent(mineralIds, new List<int> {MapRegion.GetDefault()});
 			if(rootItem == null)
 				return null;
 
@@ -197,7 +198,7 @@ namespace WindEveMagnat.Services
 		{
 			var prices = new Dictionary<int, double>();
 			var mineralIds = GetSalvageWithMineralsIds();
-			var rootItem = Instance.GetItemInfoCurrent(mineralIds, new List<int> {(int) EveRegionEnum.TheForge});
+			var rootItem = Instance.GetItemInfoCurrent(mineralIds, new List<int> {MapRegion.GetDefault()});
 			foreach (var result in rootItem.emd.result)
 			{
 				int typeid;
@@ -211,7 +212,7 @@ namespace WindEveMagnat.Services
 		{
 			var prices = new Dictionary<int, double>();
 			var mineralIds = GetAllMaterialsIds();
-			var rootItem = Instance.GetItemInfoCurrent(mineralIds, new List<int> {(int) EveRegionEnum.TheForge});
+			var rootItem = Instance.GetItemInfoCurrent(mineralIds, new List<int> {MapRegion.GetDefault()});
 			foreach (var result in rootItem.emd.result)
 			{
 				int typeid;
@@ -226,7 +227,7 @@ namespace WindEveMagnat.Services
 			var prices = new Dictionary<int, double>();
 			var materialsIds = GetConstructionComponentsIds();
 			materialsIds.AddRange(GetSalvageWithMineralsIds());
-			var rootItem = Instance.GetItemInfoCurrent(materialsIds, new List<int> {(int) EveRegionEnum.TheForge});
+			var rootItem = Instance.GetItemInfoCurrent(materialsIds, new List<int> {MapRegion.GetDefault()});
 			foreach (var result in rootItem.emd.result)
 			{
 				int typeid;

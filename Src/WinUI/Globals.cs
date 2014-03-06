@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EveAI.Live.Account;
 using WindEveMagnat.Common;
 using WindEveMagnat.Domain;
+using WindEveMagnat.Services;
 
 namespace WindEveMagnat.UI
 {
@@ -47,6 +48,7 @@ namespace WindEveMagnat.UI
 		public static void ReloadApiKeys()
 		{
 			InitApiKeys();
+			EveApiService.Instance.InitAccounts(Accounts);
 		}
 	}
 }

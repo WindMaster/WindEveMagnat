@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using EveAI.Live;
 using WindEveMagnat.Common;
 using WindEveMagnat.Domain;
+using WindEveMagnat.Domain.Wind.Eve;
 using WindEveMagnat.Services;
 using WindEveMagnat.UI.DataObjects;
 
@@ -47,18 +48,19 @@ namespace WindEveMagnat.UI.DataAccess
 				var quantity = transactionEntry.Quantity;
 				var unitPrice = transactionEntry.Price;
 				var totalPrice = transactionEntry.PriceTotal;
-				var itemObject = EveDbService.Instance.GetItemTypeById(transactionEntry.TypeID);
+				var itemObject = Cached.InvTypes.Item[transactionEntry.TypeID];
 				
 				// 30% waste for t2
 				var buildCost = CacheBuildCost.Instance.GetBuildCostByJitaPrices(transactionEntry.TypeID);
-				if(MetaGroup.IsT2(itemObject.MetaGroupId))
+				if(InvMetaGroup.IsT2(itemObject.MetaGroupId))
 					buildCost = EveMathService.GetBuildCostWithWaste(buildCost);
 				
 				if(buildCost == 0)
 					continue;
 
 				var jitaPrice = CachePrices.Instance.GetCurrentPrice(transactionEntry.TypeID);
-				var vfkPrice = MarketDataService.Instance.GetItemCurrentPrice(transactionEntry.TypeID, (int) EveRegionEnum.Deklein);
+				var vfkPrice = MarketDataService.Instance.GetItemCurrentPrice(transactionEntry.TypeID, MapRegion.Deklein.Id);
+				var metaGroupName = itemObject.MetaGroupId.HasValue ? Cached.InvMetaGroups.Item[itemObject.MetaGroupId.Value].Name : "<none>";
 
 				rows.Add(new TransactionRow
 				         	{
@@ -73,7 +75,7 @@ namespace WindEveMagnat.UI.DataAccess
 				         		Total = totalPrice,
 				         		TypeName = itemName,
 				         		TypeId = transactionEntry.TypeID,
-								GroupName = itemObject.GroupName
+								GroupName = metaGroupName
 				         	});
 				indexTransaction++;
 

@@ -62,6 +62,7 @@
     <Compile Include="CachePrices.cs" />
     <Compile Include="EveApiService.cs" />
     <Compile Include="EveDbService.cs" />
+    <Compile Include="NewEntitiesService.cs" />
     <Compile Include="EveMathService.cs" />
     <Compile Include="MarketDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

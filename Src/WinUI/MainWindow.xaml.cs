@@ -30,6 +30,7 @@ namespace WindEveMagnat.UI
 			InitializeComponent();
 
 			appTabControl.SelectionChanged += AppTabControlSelectionChanged;
+			Globals.ReloadApiKeys();
 		}
 
 		void AppTabControlSelectionChanged( object sender, SelectionChangedEventArgs e )
@@ -46,14 +47,6 @@ namespace WindEveMagnat.UI
 		private void MenuExitClick( object sender, RoutedEventArgs e )
 		{
 			Close();
-		}
-
-		private void MenuItemBuyStaffClick(object sender, RoutedEventArgs e)
-		{
-			using (var buyStuffForm = new BuySomeStaffForm())
-			{
-				buyStuffForm.ShowDialog();
-			}
 		}
 
 		private void AccountManagerClick(object sender, RoutedEventArgs e)
