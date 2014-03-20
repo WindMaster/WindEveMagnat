@@ -41,15 +41,15 @@ namespace WindEveMagnat.UI.Controls
 			txtTitle.Text = itemFromDb.Name;
 
 			// jita price 
-			var jitaPrice = CachePrices.Instance.GetCurrentPrice(typeid);
+			var jitaPrice = CachedPrices.GetSellPrice(typeid);
 			txtJitaPrice.Text = CommonUtils.ToMoneyFormat(jitaPrice);
 
 			// build cost
-			var buildCost = CacheBuildCost.Instance.GetBuildCostByJitaPrices(typeid);
+			var buildCost = EveMathService.GetBuildCostByJitaPrices(typeid);
 			txtBuildCost.Text = CommonUtils.ToMoneyFormat(buildCost);
 
 			// deklein price
-			var dekleinPrice = CachePrices.Instance.GetCurrentPrice(typeid, MapRegion.Deklein.Id);
+			var dekleinPrice = CachedPrices.GetSellPrice(typeid, MapRegion.Deklein.Id);
 			txtDekleinPrice.Text = CommonUtils.ToMoneyFormat(dekleinPrice);
 
 			// profit in Deklein

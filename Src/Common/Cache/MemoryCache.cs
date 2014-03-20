@@ -11,8 +11,8 @@ namespace WindEveMagnat.Common.Cache
  			get { return string.Format(@"cache\cache_{0}.json", _cacheKey); }
  		}
 
-		public MemoryCache(string cacheKey, IDictionary<string, MemoryCacheBase> localCache, CacheItemDataProvider callBack)
-			: base(cacheKey, typeof(T),localCache, callBack)
+		public MemoryCache(string cacheKey, IDictionary<string, MemoryCacheBase> localCache, CacheItemDataProvider callBack, bool isExpired = false)
+			: base(cacheKey, typeof(T),localCache, callBack, isExpired)
 		{
 		}
 
@@ -35,13 +35,33 @@ namespace WindEveMagnat.Common.Cache
 			}
 		}
 
- 		public override void SaveToFile()
+		public override void LoadFromFile()
+		{
+			InitCacheDirectory();
+
+ 			var cacheFileName = CacheFileName;
+			if (!File.Exists(cacheFileName))
+				return;
+
+ 			var jsonFile = new JsonFile<T> {FileName = cacheFileName};
+			if (!jsonFile.OpenAndRead()) 
+				return;
+
+			var items = jsonFile.GetObject();
+			if(items != null)
+				SetObject(items);
+		}
+
+ 		public override void SaveToFile(object items = null)
  		{
  			InitCacheDirectory();
 
  			var cacheFileName = CacheFileName;
  			var jsonFile = new JsonFile<T> {FileName = cacheFileName};
-			jsonFile.SetObject(Item);
+ 			if (items == null)
+ 				items = Item;
+
+			jsonFile.SetObject((T)items);
  			jsonFile.OpenAndWrite();
  		}
 

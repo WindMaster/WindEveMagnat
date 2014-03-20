@@ -58,8 +58,7 @@
   <ItemGroup>
     <Compile Include="BaseService.cs" />
     <Compile Include="Cached.cs" />
-    <Compile Include="CacheBuildCost.cs" />
-    <Compile Include="CachePrices.cs" />
+    <Compile Include="CachedPrices.cs" />
     <Compile Include="EveApiService.cs" />
     <Compile Include="EveDbService.cs" />
     <Compile Include="NewEntitiesService.cs" />
@@ -82,9 +81,7 @@
       <Name>Persistence</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CacheDataProviders\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

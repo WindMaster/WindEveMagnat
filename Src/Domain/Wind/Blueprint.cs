@@ -7,9 +7,17 @@ using WindEveMagnat.Domain.Wind.Eve;
 
 namespace WindEveMagnat.Domain.Wind
 {
-	class Blueprint : InvBlueprintType
+	public class Blueprint : InvBlueprintType
 	{
-		public List<InvType> Materials { get; set; }
+		public List<BlueprintMaterial> Materials { get; set; }
 
+		public Blueprint()
+		{
+		}
+
+		public Blueprint(InvBlueprintType blueprintType) : base(blueprintType)
+		{
+			
+		}
 	}
 }

@@ -51,15 +51,15 @@ namespace WindEveMagnat.UI.DataAccess
 				var itemObject = Cached.InvTypes.Item[transactionEntry.TypeID];
 				
 				// 30% waste for t2
-				var buildCost = CacheBuildCost.Instance.GetBuildCostByJitaPrices(transactionEntry.TypeID);
+				var buildCost = EveMathService.GetBuildCostByJitaPrices(transactionEntry.TypeID);
 				if(InvMetaGroup.IsT2(itemObject.MetaGroupId))
 					buildCost = EveMathService.GetBuildCostWithWaste(buildCost);
 				
 				if(buildCost == 0)
 					continue;
 
-				var jitaPrice = CachePrices.Instance.GetCurrentPrice(transactionEntry.TypeID);
-				var vfkPrice = MarketDataService.Instance.GetItemCurrentPrice(transactionEntry.TypeID, MapRegion.Deklein.Id);
+				var jitaPrice = CachedPrices.GetPrice(transactionEntry.TypeID, false, MapRegion.TheForge.Id);
+				var vfkPrice = CachedPrices.GetPrice(transactionEntry.TypeID, false, MapRegion.Deklein.Id);
 				var metaGroupName = itemObject.MetaGroupId.HasValue ? Cached.InvMetaGroups.Item[itemObject.MetaGroupId.Value].Name : "<none>";
 
 				rows.Add(new TransactionRow

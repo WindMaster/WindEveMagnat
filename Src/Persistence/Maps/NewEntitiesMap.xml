@@ -14,7 +14,7 @@
 		<statement id="GetAllInvTypes" resultClass="InvType" >
 			SELECT  
 				typeID Id
-				,groupID MetaGroupId
+				,groupID GroupId
 				,typeName Name
 				,description Description
 				,mass Mass
@@ -55,6 +55,17 @@
 				,iconID IconId
 			FROM 
 				[invMetaGroups] 
+		</statement>
+
+		<statement id="GetAllInvGroups" resultClass="InvGroup" >
+			SELECT  
+				groupID Id
+				,groupName Name
+				,categoryID CategoryId
+				,description Description
+				,iconID IconId
+			FROM 
+				[invGroups] 
 		</statement>
 
 		<statement id="GetAllInvMarketGroups" resultClass="InvMarketGroup" >

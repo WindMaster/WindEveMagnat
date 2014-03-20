@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EveAI.Live;
 using EveAI.Map;
 using NUnit.Framework;
+using WindEveMagnat.Domain.Wind.Eve;
 using WindEveMagnat.Services;
 
 namespace UnitTests.Services
@@ -24,8 +25,43 @@ namespace UnitTests.Services
 		[Ignore]
 		public void LoadFromDbAndSaveToFile()
 		{
-			Cached.PreloadAllCaches();
+			Cached.PreloadAllCachesFromDb();
+			LoadCacheAndCheckTest();
 			Cached.SaveAllDictionaries();
+		}
+
+		[Test]
+		[Ignore]
+		public void LoadFromFileAndSaveToFile()
+		{
+			Cached.PreloadAllCachesFromFiles();
+			LoadCacheAndCheckTest();
+		}
+
+		[Test]
+		[Ignore]
+		public void TestCachedPricesCommon()
+		{
+			CachedPrices.PreloadAllCachesFromDb();
+			CachedPrices.SaveAllDictionaries();
+		}
+
+		[Test]
+		public void TestPrices()
+		{
+			var dominix = Cached.InvTypes.Item.FirstOrDefault(x => x.Value.Name == "Dominix").Value;
+			var price = CachedPrices.GetSellPrice(dominix.Id, MapRegion.TheForge.Id);
+			Assert.Greater(price, 0);
+		}
+
+		[Test]
+		public void TestPricesPreloadAllCaches()
+		{
+			var dominix = Cached.InvTypes.Item.FirstOrDefault(x => x.Value.Name == "Dominix").Value;
+			CachedPrices.GetPrice(dominix.Id, true, MapRegion.TheForge.Id);
+			CachedPrices.GetPrice(dominix.Id, false, MapRegion.TheForge.Id);
+			CachedPrices.GetPrice(dominix.Id, true, MapRegion.Deklein.Id);
+			CachedPrices.GetPrice(dominix.Id, false, MapRegion.Deklein.Id);
 		}
 	}
 }

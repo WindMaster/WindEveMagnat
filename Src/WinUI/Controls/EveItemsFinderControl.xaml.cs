@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WindEveMagnat.Domain.Eve;
+using WindEveMagnat.Domain.Wind.Eve;
 using WindEveMagnat.Services;
 using WindEveMagnat.UI.DataObjects;
 
@@ -39,8 +40,8 @@ namespace WindEveMagnat.UI.Controls
 				return;
 			}
 
-			var text = txtFinderText.Text;
-			var resultList = Cached.InvTypes.Item.Where(x=>x.Value.Name.Contains(text));
+			var text = txtFinderText.Text.ToLower();
+			var resultList = Cached.InvTypes.Item.Where(x=>x.Value.Name.ToLower().Contains(text)).Select(y=>y.Value);
 			listViewItems.DataContext = resultList;
 		}
 
@@ -58,8 +59,8 @@ namespace WindEveMagnat.UI.Controls
 			if(OnItemDoubleClicked == null)
 				return;
 			
-			var itemObject = (EveType)listViewItems.SelectedValue;
-			OnItemDoubleClicked(itemObject.TypeId);
+			var itemObject = (InvType)listViewItems.SelectedValue;
+			OnItemDoubleClicked(itemObject.Id);
 		}
 
 		private void listViewItems_SelectionChanged( object sender, SelectionChangedEventArgs e )

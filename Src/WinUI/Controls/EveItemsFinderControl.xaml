@@ -10,8 +10,8 @@
 		<ListView Margin="0,41,0,0" Name="listViewItems" ItemsSource="{Binding}" MouseDoubleClick="ListViewItemsMouseDoubleClick" SelectionMode="Single" SelectionChanged="listViewItems_SelectionChanged">
 			<ListView.View>
 				<GridView>
-					<GridViewColumn Header="Id" DisplayMemberBinding="{Binding TypeId}" Width="40"/>
-					<GridViewColumn Header="Name" DisplayMemberBinding="{Binding TypeName}" Width="270"/>
+					<GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="40"/>
+					<GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="270"/>
 				</GridView>
 			</ListView.View>
 		</ListView>

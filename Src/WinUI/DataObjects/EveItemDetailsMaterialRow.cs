@@ -90,7 +90,7 @@ namespace WindEveMagnat.UI.DataObjects
 		{
 			get
 			{
-				Price = CachePrices.Instance.GetCurrentPrice(typeid);
+				Price = CachedPrices.GetPrice(typeid, false);
 				return CommonUtils.ToMoneyFormat(Price);
 			}
 		}

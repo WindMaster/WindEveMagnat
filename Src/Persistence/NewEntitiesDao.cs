@@ -25,6 +25,11 @@ namespace WindEveMagnat.Persistence
 			return EntityMapperFactory.EntityMapper.QueryForList<InvMetaGroup>("GetAllInvMetaGroups", null);
 		}
 
+		public IList<InvGroup> GetAllInvGroups()
+		{
+			return EntityMapperFactory.EntityMapper.QueryForList<InvGroup>("GetAllInvGroups", null);
+		}
+
 		public IList<InvMarketGroup> GetAllInvMarketGroups()
 		{
 			return EntityMapperFactory.EntityMapper.QueryForList<InvMarketGroup>("GetAllInvMarketGroups", null);

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using Newtonsoft.Json;
 using WindEveMagnat.Domain;
 using WindEveMagnat.Domain.Wind.Eve;
@@ -12,7 +14,9 @@ namespace WindEveMagnat.Services
 	{
 		private static MarketDataService _instance = null;
 
-		private const string RequestUrlFormat = "http://api.eve-marketdata.com/api/{0}?char_name={1}&type_ids={2}&region_ids={3}&buysell={4}";
+		private const string RequestUrlFormat =
+			"http://api.eve-marketdata.com/api/{0}?char_name={1}&type_ids={2}&region_ids={3}&buysell={4}";
+
 		private const string MyCharacterNameForContract = "Miner_WindMaster";
 		private const string CurrentPriceAddress = "item_prices2.json";
 		private const string OrdersAddress = "item_orders2.json";
@@ -42,37 +46,37 @@ namespace WindEveMagnat.Services
 		{
 			string responseString = null;
 			try
-            {
-                var request = WebRequest.Create(requestUrl) as HttpWebRequest;
-				if(request == null)
+			{
+				var request = WebRequest.Create(requestUrl) as HttpWebRequest;
+				if (request == null)
 					return null;
 
-                using (var response = request.GetResponse() as HttpWebResponse)
-                {
-                	if (response == null)
-                		return null;
+				using (var response = request.GetResponse() as HttpWebResponse)
+				{
+					if (response == null)
+						return null;
 
-                	if (response.StatusCode != HttpStatusCode.OK)
-                		throw new Exception(String.Format(
-                			"Server error (HTTP {0}: {1}).",
-                			response.StatusCode,
-                			response.StatusDescription));
+					if (response.StatusCode != HttpStatusCode.OK)
+						throw new Exception(String.Format(
+							"Server error (HTTP {0}: {1}).",
+							response.StatusCode,
+							response.StatusDescription));
 
-                	using (var stream = response.GetResponseStream())
-                	{
-						if(stream == null)
+					using (var stream = response.GetResponseStream())
+					{
+						if (stream == null)
 							return null;
 
-                		var reader = new StreamReader(stream);
-                		responseString = reader.ReadToEnd();
-                	}
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return null;
-            }
+						var reader = new StreamReader(stream);
+						responseString = reader.ReadToEnd();
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
+				return null;
+			}
 			return responseString;
 		}
 
@@ -90,7 +94,8 @@ namespace WindEveMagnat.Services
 		/// <param name="regionIds"></param>
 		/// <param name="buySell"></param>
 		/// <returns></returns>
-		public Domain.EveMarketData.CurrentPrice.RootObject GetItemInfoCurrent(IList<int> itemIds, IList<int> regionIds, string buySell = "s")
+		public Domain.EveMarketData.CurrentPrice.RootObject GetItemInfoCurrent(IList<int> itemIds, IList<int> regionIds,
+			string buySell = "s")
 		{
 			var items = string.Join(",", itemIds);
 			var regions = string.Join(",", regionIds);
@@ -102,13 +107,22 @@ namespace WindEveMagnat.Services
 			{
 				result = JsonConvert.DeserializeObject<Domain.EveMarketData.CurrentPrice.RootObject>(json);
 			}
-			catch{}
+			catch(Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
 			return result;
 		}
 
 		public Domain.EveMarketData.CurrentPrice.RootObject GetItemInfoCurrent(int itemId, int regionId, string buySell = "s")
 		{
 			return GetItemInfoCurrent(new List<int> {itemId}, new List<int> {regionId}, buySell);
+		}
+
+		public Domain.EveMarketData.CurrentPrice.RootObject GetItemInfoCurrent(List<int> itemIds, int regionId, bool isBuy)
+		{
+			var buySell = isBuy ? "b" : "s";
+			return GetItemInfoCurrent(itemIds, new List<int> {regionId}, buySell);
 		}
 
 		public double GetItemCurrentPrice(int itemId, int regionId, string buySell = "s")
@@ -124,7 +138,8 @@ namespace WindEveMagnat.Services
 		/// <param name="regionIds"></param>
 		/// <param name="buySell"></param>
 		/// <returns></returns>
-		public Domain.EveMarketData.OrdersInfo.RootObject GetOrdersInfo(IList<int> itemIds, IList<int> regionIds, string buySell = "s")
+		public Domain.EveMarketData.OrdersInfo.RootObject GetOrdersInfo(IList<int> itemIds, IList<int> regionIds,
+			string buySell = "s")
 		{
 			var items = string.Join(",", itemIds);
 			var regions = string.Join(",", regionIds);
@@ -141,60 +156,73 @@ namespace WindEveMagnat.Services
 		/// <param name="regionIds"></param>
 		/// <param name="buySell"></param>
 		/// <returns></returns>
-		public Domain.EveMarketData.OrdersHistory.RootObject GetHistoryInfo(IList<int> itemIds, IList<int> regionIds, string buySell = "s")
+		public Domain.EveMarketData.OrdersHistory.RootObject GetHistoryInfo(IList<int> itemIds, IList<int> regionIds,
+			string buySell = "s")
 		{
 			var items = string.Join(",", itemIds);
 			var regions = string.Join(",", regionIds);
 
 			var requestUrl = GetHistoryAddressRequestUrl(MyCharacterNameForContract, items, regions, buySell);
 			var json = ProcessRequestFromUrl(requestUrl);
-			return JsonConvert.DeserializeObject<Domain.EveMarketData.OrdersHistory.RootObject>(json);
+			if (json == null)
+				return null;
+
+			try
+			{
+				return JsonConvert.DeserializeObject<Domain.EveMarketData.OrdersHistory.RootObject>( json );
+			}
+			catch( Exception ex )
+			{
+				Console.WriteLine(ex.Message);
+			}
+			return null;
 		}
 
-		public Dictionary<int, int> GetMarketVolumeForItems(IList<int> itemsIds, IList<int> regionIds = null, string buySell = "s")
+		public Dictionary<int, int> GetMarketVolumeForItems(IList<int> itemsIds, IList<int> regionIds = null,
+			string buySell = "s")
 		{
 			var resultDic = new Dictionary<int, int>();
 			if (regionIds == null || regionIds.Count == 0)
 				regionIds = new List<int> {MapRegion.GetDefault()};
 
 			var rootItem = GetHistoryInfo(itemsIds, regionIds, buySell);
-			if(rootItem == null)
+			if (rootItem == null)
 				return null;
 
 			foreach (var result in rootItem.emd.result)
 			{
 				int typeid;
 				int volume;
-				if (!int.TryParse(result.row.typeID, out typeid) || !int.TryParse(result.row.volume, out volume)) 
+				if (!int.TryParse(result.row.typeID, out typeid) || !int.TryParse(result.row.volume, out volume))
 					continue;
 
-				if(!resultDic.ContainsKey(typeid))
+				if (!resultDic.ContainsKey(typeid))
 					resultDic.Add(typeid, volume);
 				else
 					resultDic[typeid] += volume;
 			}
 
 			return resultDic;
-		} 
+		}
 
-		public Dictionary<int,double> GetCurrentMineralPrices()
+		public Dictionary<int, double> GetCurrentMineralPrices()
 		{
 			var prices = new Dictionary<int, double>();
 			var mineralIds = GetMineralsIds();
 			var rootItem = Instance.GetItemInfoCurrent(mineralIds, new List<int> {MapRegion.GetDefault()});
-			if(rootItem == null)
+			if (rootItem == null)
 				return null;
 
 			foreach (var result in rootItem.emd.result)
 			{
 				int typeid;
-				if(int.TryParse(result.row.typeID, out typeid))
+				if (int.TryParse(result.row.typeID, out typeid))
 					prices.Add(typeid, result.row.price);
 			}
 			return prices;
 		}
 
-		public Dictionary<int,double> GetCurrentSalvageWithMineralPrices()
+		public Dictionary<int, double> GetCurrentSalvageWithMineralPrices()
 		{
 			var prices = new Dictionary<int, double>();
 			var mineralIds = GetSalvageWithMineralsIds();
@@ -202,27 +230,35 @@ namespace WindEveMagnat.Services
 			foreach (var result in rootItem.emd.result)
 			{
 				int typeid;
-				if(int.TryParse(result.row.typeID, out typeid))
+				if (int.TryParse(result.row.typeID, out typeid))
 					prices.Add(typeid, result.row.price);
 			}
 			return prices;
 		}
 
-		public Dictionary<int,double> GetAllMaterials()
+		public Dictionary<int, double> GetAllMaterials()
 		{
 			var prices = new Dictionary<int, double>();
 			var mineralIds = GetAllMaterialsIds();
 			var rootItem = Instance.GetItemInfoCurrent(mineralIds, new List<int> {MapRegion.GetDefault()});
-			foreach (var result in rootItem.emd.result)
+
+			try
 			{
-				int typeid;
-				if(int.TryParse(result.row.typeID, out typeid))
-					prices.Add(typeid, result.row.price);
+				foreach (var result in rootItem.emd.result)
+				{
+					int typeid;
+					if (int.TryParse(result.row.typeID, out typeid))
+						prices.Add(typeid, result.row.price);
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex);
 			}
 			return prices;
 		}
-		
-		public Dictionary<int,double> GetCurrentAllMaterialsAndCcPrices()
+
+		public Dictionary<int, double> GetCurrentAllMaterialsAndCcPrices()
 		{
 			var prices = new Dictionary<int, double>();
 			var materialsIds = GetConstructionComponentsIds();
@@ -231,7 +267,7 @@ namespace WindEveMagnat.Services
 			foreach (var result in rootItem.emd.result)
 			{
 				int typeid;
-				if(int.TryParse(result.row.typeID, out typeid))
+				if (int.TryParse(result.row.typeID, out typeid))
 					prices.Add(typeid, result.row.price);
 			}
 			return prices;
@@ -245,17 +281,17 @@ namespace WindEveMagnat.Services
 		public static List<int> GetSalvageT1Ids()
 		{
 			return Common.CommonUtils.GetListFromArray(EveSalvageT1Enum.AlloyedTritaniumBar);
-		} 
+		}
 
 		public static List<int> GetSalvageT2Ids()
 		{
 			return Common.CommonUtils.GetListFromArray(EveSalvageT2Enum.CapacitorConsole);
-		} 
+		}
 
 		public static List<int> GetMaterialsT2Ids()
 		{
 			return Common.CommonUtils.GetListFromArray(EveSalvageT2Enum.CapacitorConsole);
-		} 
+		}
 
 		public static List<int> GetConstructionComponentsIds()
 		{
@@ -265,14 +301,14 @@ namespace WindEveMagnat.Services
 			result.AddRange(Common.CommonUtils.GetListFromArray(EveMaterialsT2MinmatarEnum.DeflectionShieldEmitter));
 			result.AddRange(Common.CommonUtils.GetListFromArray(EveMaterialsT2GallenteEnum.CrystallineCarbonideArmorPlate));
 			return result;
-		} 
+		}
 
 		public static List<int> GetSalvageAllIds()
 		{
 			var salvage = GetSalvageT1Ids();
 			salvage.AddRange(GetSalvageT2Ids());
 			return salvage;
-		} 
+		}
 
 		public static List<int> GetAllMaterialsIds()
 		{
@@ -296,6 +332,43 @@ namespace WindEveMagnat.Services
 			var salvage = GetSalvageAllIds();
 			salvage.AddRange(GetMineralsIds());
 			return salvage;
-		} 
+		}
+
+		public Dictionary<int, double> GetAllPricesForRegion(int regionId, bool isBuy)
+		{
+			var result = new Dictionary<int, double>();
+
+			var minItemId = 0;
+			var maxItemId = 33407;
+			var step = 1000;
+
+			try
+			{
+				for (int i = minItemId; i < maxItemId/step + 1; i++)
+				{
+					var fromValue = i*step;
+					var items = Enumerable.Range(fromValue, step-1).Select(x => x).ToList();
+					var rootItem = GetItemInfoCurrent(items, regionId, isBuy);
+					if(rootItem == null)
+						break;
+
+					foreach (var resultPrices in rootItem.emd.result)
+					{
+						int typeid;
+						if (int.TryParse(resultPrices.row.typeID, out typeid))
+							result.Add(typeid, resultPrices.row.price);
+					}
+				}
+			}
+			catch(Exception exception)
+			{
+				Console.WriteLine(exception.Message);
+			}
+
+			if (result.Count == 0)
+				return null;
+
+			return result;
+		}
 	}
 }

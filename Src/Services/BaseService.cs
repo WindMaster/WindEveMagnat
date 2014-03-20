@@ -9,7 +9,7 @@ namespace WindEveMagnat.Services
 	{
 		public static void TestInternetConnected()
 		{
-			throw new NotImplementedException();
+			// TODO: Add checking for internet
 		}
 	}
 }

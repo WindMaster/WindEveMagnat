@@ -20,5 +20,26 @@ namespace WindEveMagnat.Domain.Wind.Eve
 		public int? MaterialModifier { get; set; }
 		public int? WasteFactor { get; set; }
 		public int? MaxProductionLimit { get; set; }
+
+		public InvBlueprintType()
+		{
+			
+		}
+
+		public InvBlueprintType(InvBlueprintType baseType) : base(baseType)
+		{
+			ParentBlueprintTypeId = baseType.ParentBlueprintTypeId;
+			ProductTypeId = baseType.ProductTypeId;
+			ProductionTime = baseType.ProductionTime;
+			TechLevel = baseType.TechLevel;
+			ResearchProductivityTime = baseType.ResearchProductivityTime;
+			ResearchMaterialTime = baseType.ResearchMaterialTime;
+			ResearchCopyTime = baseType.ResearchCopyTime;
+			ResearchTechTime = baseType.ResearchTechTime;
+			ProductivityModifier = baseType.ProductivityModifier;
+			MaterialModifier = baseType.MaterialModifier;
+			WasteFactor = baseType.WasteFactor;
+			MaxProductionLimit = baseType.MaxProductionLimit;
+		}
 	}
 }

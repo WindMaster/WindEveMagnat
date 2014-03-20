@@ -55,6 +55,7 @@
     <Compile Include="Eve\EveType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Wind\Blueprint.cs" />
+    <Compile Include="Wind\BlueprintMaterial.cs" />
     <Compile Include="Wind\EveEntities\ChrAttribute.cs" />
     <Compile Include="Wind\EveEntities\InvBlueprintType.cs" />
     <Compile Include="Wind\EveEntities\InvCategory.cs" />

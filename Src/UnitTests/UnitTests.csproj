@@ -65,7 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dao\NewEntitiesDaoTest.cs" />
-    <Compile Include="Production\ProductionCost.cs" />
+    <Compile Include="Production\ProductionCostTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CacheTests.cs" />
     <Compile Include="Services\MarketDataServiceTest.cs" />

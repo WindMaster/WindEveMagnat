@@ -50,7 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\ICacheDataProvider.cs" />
+    <Compile Include="Cache\CachedBase.cs" />
     <Compile Include="Cache\MemoryCache.cs" />
     <Compile Include="CommonUtils.cs" />
     <Compile Include="Config.cs" />

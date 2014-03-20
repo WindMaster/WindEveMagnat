@@ -7,7 +7,7 @@ using WindEveMagnat.Services;
 
 namespace UnitTests.Production
 {
-	public class ProductionCost
+	public class ProductionCostTests
 	{
 		[Test]
 		public void ProductionT2Cost_Manticore()
@@ -15,7 +15,7 @@ namespace UnitTests.Production
 			// Manticore
 			const int manticoreTypeId = 12032; 
 			var materialRows = EveDbService.Instance.GetIdealMaterialRowsForItem(manticoreTypeId);
-			var buildPrice = EveMathService.GetBuildPriceForItem(materialRows);
+			var buildPrice = EveMathService.GetBuildPriceForItemNew(materialRows);
 			Assert.Greater(buildPrice, 12000000);
 		}
 
@@ -25,8 +25,18 @@ namespace UnitTests.Production
 			// Sabre
 			const int sabreTypeId = 22456; 
 			var materialRows = EveDbService.Instance.GetIdealMaterialRowsForItem(sabreTypeId);
-			var buildPrice = EveMathService.GetBuildPriceForItem(materialRows);
+			var buildPrice = EveMathService.GetBuildPriceForItemNew(materialRows);
 			Assert.Greater(buildPrice, 12000000);
+		}
+
+		[Test]
+		public void ProductionMaterialsSabre()
+		{
+			// Sabre
+			const int sabreTypeId = 22456; 
+			var materialRows = EveDbService.Instance.GetIdealMaterialRowsForItem(sabreTypeId);
+			var blueprint = NewEntitiesService.Instance.GetBlueprint(sabreTypeId);
+			Assert.AreEqual(materialRows.Count, blueprint.Materials.Count);
 		}
 	}
 }
